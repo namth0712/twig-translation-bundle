@@ -1,0 +1,29 @@
+{
+  "name": "darkcat/twig-translation-bundle",
+  "description": "Symfony 4 bundle for performance translation in twig",
+  "keywords": [
+    "twig",
+    "twig translate",
+    "symfony translate",
+    "symfony multilple languages"
+  ],
+  "homepage": "https://github.com/namth0712/twig-translation-bundle",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "namth",
+      "email": "namth0712@gmail.com",
+      "homepage": "https://github.com/namth0712"
+    }
+  ],
+  "require": {
+    "symfony/framework-bundle": "~4.0",
+    "twig/twig": "~2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "DarkCat\\TwigTranslationBundle\\": ""
+    }
+  }
+}
