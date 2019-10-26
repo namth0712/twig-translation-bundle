@@ -3,7 +3,6 @@
 namespace DarkCat\TwigTranslationBundle\Twig\Node\Expression;
 
 use Twig\Compiler;
-use Twig\Node\Node;
 use Twig\Node\Expression\FunctionExpression;
 
 class TransFunctionExpression extends FunctionExpression
@@ -18,7 +17,7 @@ class TransFunctionExpression extends FunctionExpression
             return;
         }
         $params = $this->getParams($arguments);
-        if(!$params){
+        if (!$params) {
             return;
         }
 
@@ -44,14 +43,38 @@ class TransFunctionExpression extends FunctionExpression
                     ->getExtension('Symfony\Bridge\Twig\Extension\TranslationExtension')
                     ->trans($msg->getAttribute('value'), [], $domain, $locale, $count);
 
-        if(isset($params[1])){
+        if (isset($params[1])) {
+            $name = $this->getAttribute('name');
+            $function = $compiler->getEnvironment()->getFunction($name);
+
+            $this->setAttribute('name', $name);
+            $this->setAttribute('type', 'function');
+            $this->setAttribute('needs_environment', $function->needsEnvironment());
+            $this->setAttribute('needs_context', $function->needsContext());
+            $this->setAttribute('arguments', $function->getArguments());
+            $callable = $function->getCallable();
+            if ('constant' === $name && $this->getAttribute('is_defined_test')) {
+                $callable = 'twig_constant_is_defined';
+            }
+            $this->setAttribute('callable', $callable);
+            $this->setAttribute('is_variadic', $function->isVariadic());
+
             $compiler->raw(sprintf('strtr(\'%s\', ', $message));
-            $compiler->subcompile($params[1]);
+            $this->setAttribute(
+                'callable',
+                function (array $arg = []) {
+                }
+            );
+            $callable = $this->getAttribute('callable');
+            $arguments = $this->getArguments($callable, $this->getNode('arguments'));
+            if (isset($arguments[1])) {
+                $compiler->subcompile($arguments[1]);
+            }
             $compiler->raw(')');
-        }else{
+        } else {
             $compiler->string($message);
-        }
-    }
+        }//end if
+    }//end compile()
 
     protected function getParams($arguments)
     {
@@ -68,5 +91,5 @@ class TransFunctionExpression extends FunctionExpression
         }
 
         return $params;
-    }
-}
+    }//end getParams()
+}//end class

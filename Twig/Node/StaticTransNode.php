@@ -6,7 +6,7 @@ use Twig\Compiler;
 use Symfony\Bridge\Twig\Node\TransNode;
 use Twig\Node\Expression\ArrayExpression;
 
-class PlainTransNode extends TransNode
+class StaticTransNode extends TransNode
 {
     public function compile(Compiler $compiler)
     {
@@ -17,7 +17,15 @@ class PlainTransNode extends TransNode
             $defaults = $this->getNode('vars');
             $vars = null;
         }
-        list($msg, $defaults) = $this->compileString($this->getNode('body'), $defaults, (bool)$vars);
+        list($msg, $defaults) = $this->compileString($this->getNode('body'), $defaults, (bool) $vars);
+
+        $args = [];
+        $valuePairs = $defaults->getKeyValuePairs();
+        if ($valuePairs) {
+            foreach ($valuePairs as $pair) {
+                $args[$pair['key']->getAttribute('value')] = $pair['value']->getAttribute('value');
+            }
+        }
 
         $domain = 'messages';
         if ($this->hasNode('domain')) {
@@ -36,8 +44,8 @@ class PlainTransNode extends TransNode
 
         $env = $compiler->getEnvironment();
         $message = $env
-            ->getExtension('Symfony\Bridge\Twig\Extension\TranslationExtension')
-            ->trans($msg->getAttribute('value'), [], $domain, $locale, $count);
+                    ->getExtension('Symfony\Bridge\Twig\Extension\TranslationExtension')
+                    ->trans($msg->getAttribute('value'), $args, $domain, $locale, $count);
 
         $compiler
             ->write('echo ');
@@ -59,5 +67,5 @@ class PlainTransNode extends TransNode
         }
         $compiler
             ->raw(";\n");
-    }
-}
+    }//end compile()
+}//end class

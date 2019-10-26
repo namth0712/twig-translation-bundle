@@ -3,9 +3,7 @@
 namespace DarkCat\TwigTranslationBundle\Twig\Node\Expression;
 
 use Twig\Compiler;
-use Twig\Node\Expression\ConstantExpression;
 use Twig\Node\Expression\FilterExpression;
-use Twig\Node\Node;
 
 class TransFilterExpression extends FilterExpression
 {
@@ -31,7 +29,11 @@ class TransFilterExpression extends FilterExpression
             $this->setAttribute('callable', $filter->getCallable());
             $this->setAttribute('is_variadic', $filter->isVariadic());
 
-            $this->setAttribute('callable', function(array $arg = []){});
+            $this->setAttribute(
+                'callable',
+                function (array $arg = []) {
+                }
+            );
             $callable = $this->getAttribute('callable');
             $arguments = $this->getArguments($callable, $this->getNode('arguments'));
         }
@@ -52,14 +54,16 @@ class TransFilterExpression extends FilterExpression
         }
 
         $message = $env
-            ->getExtension('Symfony\Bridge\Twig\Extension\TranslationExtension')
-            ->trans($msg->getAttribute('value'), [], $domain, $locale, $count);
-        if(isset($arguments[0])){
+                    ->getExtension('Symfony\Bridge\Twig\Extension\TranslationExtension')
+                    ->trans($msg->getAttribute('value'), [], $domain, $locale, $count);
+
+
+        if (isset($arguments[0])) {
             $compiler->raw(sprintf('strtr(\'%s\', ', $message));
             $compiler->subcompile($arguments[0]);
             $compiler->raw(')');
-        }else{
+        } else {
             $compiler->string($message);
         }
-    }
-}
+    }//end compile()
+}//end class

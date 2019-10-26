@@ -19,5 +19,5 @@ class TwigTranslationExtension extends Extension
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('twig.xml');
-    }
-}
+    }//end load()
+}//end class

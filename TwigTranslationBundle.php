@@ -11,4 +11,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class TwigTranslationBundle extends Bundle
 {
-}
+}//end class

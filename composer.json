@@ -25,5 +25,8 @@
     "psr-4": {
       "DarkCat\\TwigTranslationBundle\\": ""
     }
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.5"
   }
 }

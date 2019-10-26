@@ -4,8 +4,7 @@ namespace DarkCat\TwigTranslationBundle\Twig\Extension;
 
 use DarkCat\TwigTranslationBundle\Twig\Node\Expression\TransFilterExpression;
 use DarkCat\TwigTranslationBundle\Twig\Node\Expression\TransFunctionExpression;
-use DarkCat\TwigTranslationBundle\Twig\NodeVisitor\EscaperNodeVisitor;
-use DarkCat\TwigTranslationBundle\Twig\TokenParser\PlainTransTokenParser;
+use DarkCat\TwigTranslationBundle\Twig\TokenParser\StaticTransTokenParser;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -26,26 +25,37 @@ class TranslationExtension extends AbstractExtension
      */
     public function getTokenParsers()
     {
+        print_r(9999);
+        die;
         return [
-            new PlainTransTokenParser(),
+            new StaticTransTokenParser(),
         ];
-    }
+    }//end getTokenParsers()
 
     public function getFilters()
     {
         return [
-            new TwigFilter('t', 'plaintrans', [
-                'is_safe' => ['all'],
-                'is_safe_callback' => ['all'],
-                'node_class' => TransFilterExpression::class,
-            ]),
-            new TwigFilter('ptrans', 'plaintrans', [
-                'is_safe' => ['all'],
-                'is_safe_callback' => ['all'],
-                'node_class' => TransFilterExpression::class,
-            ]),
+            new TwigFilter(
+                't',
+                'statictrans',
+                [
+                    'is_safe' => ['all'],
+                    'is_safe_callback' => ['all'],
+                    'node_class' => TransFilterExpression::class,
+                ]
+            ),
+
+            new TwigFilter(
+                'statictrans',
+                'statictrans',
+                [
+                    'is_safe' => ['all'],
+                    'is_safe_callback' => ['all'],
+                    'node_class' => TransFilterExpression::class,
+                ]
+            ),
         ];
-    }
+    }//end getFilters()
 
     /**
      * {@inheritdoc}
@@ -53,18 +63,26 @@ class TranslationExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('t', 'plaintrans', [
-                'needs_environment' => true,
-                'is_safe' => ['all'],
-                'is_safe_callback' => ['all'],
-                'node_class' => TransFunctionExpression::class,
-            ]),
-            new TwigFunction('ptrans', 'plaintrans', [
-                'needs_environment' => true,
-                'is_safe' => ['all'],
-                'is_safe_callback' => ['all'],
-                'node_class' => TransFunctionExpression::class,
-            ]),
+            new TwigFunction(
+                't',
+                'statictrans',
+                [
+                    'needs_environment' => true,
+                    'is_safe' => ['all'],
+                    'is_safe_callback' => ['all'],
+                    'node_class' => TransFunctionExpression::class,
+                ]
+            ),
+            new TwigFunction(
+                'statictrans',
+                'statictrans',
+                [
+                    'needs_environment' => true,
+                    'is_safe' => ['all'],
+                    'is_safe_callback' => ['all'],
+                    'node_class' => TransFunctionExpression::class,
+                ]
+            ),
         ];
-    }
-}
+    }//end getFunctions()
+}//end class

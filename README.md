@@ -76,28 +76,29 @@ return [
 ### Use Twig Tags
 
 ```jinja2
-{% ptrans with {'%name%': 'Jesse'} from 'messsages' %}Hello %name%{% endptrans %}
+{% statictrans with {'%name%': 'Jesse'} from 'messsages' %}Hello %name%{% endstatictrans %}
 
-{% ptrans with {'%name%': 'Jesse'} from 'messsages' into 'fr' %}Hello %name%{% endptrans %}
+{% statictrans with {'%name%': 'Jesse'} from 'messsages' into 'fr' %}Hello %name%{% endstatictrans %}
 ```
 
 ### Use Twig Filters
 
-The `t` and `ptrans` filters can be used to translate variable texts and complex expressions:
+The `t` and `statictrans` filters can be used to translate variable texts and complex expressions:
 
 ```jinja2
-{{ message|ptrans(params, domain, locale, count) }}
+{{ message|statictrans(params, domain, locale, count) }}
 
 {{ 'Strangle Things'|t }}
-{{ 'Strangle Things'|ptrans }}
-{{ 'Hello %name%'|ptrans({'%name%': 'Walter White'}, 'messsages') }}
+{{ 'Strangle Things'|statictrans }}
+{{ 'Hello %name%'|statictrans({'%name%': 'Walter White'}, 'messsages') }}
 ```
 
 ### Use Twig Functions
 
 ```jinja2
-{{ ptrans(message, params, domain, locale, count) }}
+{{ statictrans(message, params, domain, locale, count) }}
 
-{{ ptrans('Strangle Things') }}
-{{ ptrans('Hello %name%', {'%name%': 'Walter White'}) }}
+{{ t('Strangle Things') }}
+{{ statictrans('Strangle Things') }}
+{{ statictrans('Hello %name%', {'%name%': 'Walter White'}) }}
 ```
