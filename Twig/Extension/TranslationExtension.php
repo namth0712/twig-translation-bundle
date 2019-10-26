@@ -25,8 +25,6 @@ class TranslationExtension extends AbstractExtension
      */
     public function getTokenParsers()
     {
-        print_r(9999);
-        die;
         return [
             new StaticTransTokenParser(),
         ];
